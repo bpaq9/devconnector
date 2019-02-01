@@ -10,7 +10,7 @@ const app = express();
 //DB Config
 const db = require("./config/keys").mongoURI;
 
-//Connet to MongoDB
+//Connect to MongoDB
 mongoose
   .connect(db)
   .then(() => console.log("MongoDB Connected"))
