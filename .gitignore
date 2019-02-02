@@ -1,0 +1,12 @@
+
+*.json
+*.json
+*.json
+*.js
+node_modules/.bin/gravatar
+*.md
+*.txt
+node_modules/wrap-ansi/node_modules/strip-ansi/license
+node_modules/wrap-ansi/node_modules/ansi-regex/license
+*.map
+node_modules/code-point-at/license
