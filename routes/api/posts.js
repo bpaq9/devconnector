@@ -70,7 +70,7 @@ router.delete(
   "/:id",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    Profile.fineOne({ user: req.user.id }).then(profile => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
       Post.findById(req.params.id)
         .then(post => {
           //Check for post owner
@@ -82,6 +82,35 @@ router.delete(
 
           // Delete
           post.remove().then(() => res.json({ success: true }));
+        })
+        .catch((err = res.status(404).json({ postnotfound: "No post found" })));
+    });
+  }
+);
+
+// @route Post api/like/:id
+//@description Like post post
+//@access Private
+router.delete(
+  "like/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      Post.findById(req.params.id)
+        .then(post => {
+          if (
+            post.likes.filter(like => like.user.toString() === req.user.id)
+              .length > 0
+          ) {
+            return res
+              .status(400)
+              .json({ alreadylike: "User already like this post" });
+          }
+
+          // Add user id to likes array
+          post.likes.unshift({ user: req.user.is });
+
+          post.save().then(post => res.json(post));
         })
         .catch((err = res.status(404).json({ postnotfound: "No post found" })));
     });
